@@ -96,8 +96,9 @@ function SignUpPage() {
     };
 
     return (
+        <div className="login font-serif">
         <div style={containerStyle}>
-        <h2>SignUp</h2>
+        <h2 className='text-center'>SignUp</h2>
         <form onSubmit={handleSignUp}>
             <label>
             Username:
@@ -106,6 +107,7 @@ function SignUpPage() {
                 value={username}
                 onChange={handleUsernameChange}
                 style={inputStyle}
+                className="rounded-lg"
             />
             </label>
             <br />
@@ -116,6 +118,7 @@ function SignUpPage() {
                 value={password}
                 onChange={handlePasswordChange}
                 style={inputStyle}
+                className="rounded-lg"
             />
             </label>
             <br />
@@ -126,44 +129,43 @@ function SignUpPage() {
                     value={repeatePassword}
                     onChange={handleRepeatPasswordChange}
                     style={inputStyle}
+                    className="rounded-lg"
                 />
             </label>
             <br />
-            <button type="submit" style={buttonStyle}>Login</button>
+            <button type="submit" className='btn-primary' style={buttonStyle}>Sign Up</button>
         </form>
         <br />
-        <button onClick={handleBackClick} type="submit" style={buttonStyle}>Back</button>
+        <button onClick={handleBackClick} className='btn-primary' type="submit" style={buttonStyle}>Back</button>
+        </div>
         </div>
     );
 }
 
 // CSS styles
 const containerStyle = {
-  width: '300px',
-  margin: 'auto',
-  marginTop: '100px',
-  padding: '20px',
-  border: '1px solid #ccc',
-  borderRadius: '5px',
-  backgroundColor: '#f2f2f2',
-};
-
-const inputStyle = {
-  display: 'block',
-  width: '100%',
-  padding: '8px',
-  marginBottom: '10px',
-};
-
-const buttonStyle = {
-  display: 'block',
-  width: '100%',
-  padding: '10px',
-  backgroundColor: '#4caf50',
-  color: 'white',
-  border: 'none',
-  borderRadius: '5px',
-  cursor: 'pointer',
-};
-
+    width: '300px',
+    margin: 'auto',
+    marginTop: '0px',
+    padding: '20px',
+    
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+    backgroundColor: '#f2f2f299',
+  };
+  
+  const inputStyle = {
+    display: 'block',
+    width: '100%',
+    padding: '8px',
+    marginBottom: '10px',
+  };
+  
+  const buttonStyle = {
+    
+    width: '100%',
+    padding: '10px',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  };
 export default SignUpPage;

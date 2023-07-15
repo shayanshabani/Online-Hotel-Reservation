@@ -99,8 +99,9 @@ function LoginPage() {
     };
 
     return (
-        <div style={containerStyle}>
-        <h2>Login</h2>
+        <div className="login font-serif">
+        <div style={containerStyle} >
+        <h2 className='text-center'>Login</h2>
         <form onSubmit={handleLogin}>
             <label>
             Username:
@@ -109,6 +110,7 @@ function LoginPage() {
                 value={username}
                 onChange={handleUsernameChange}
                 style={inputStyle}
+                className="rounded-lg"
             />
             </label>
             <br />
@@ -119,13 +121,15 @@ function LoginPage() {
                 value={password}
                 onChange={handlePasswordChange}
                 style={inputStyle}
+                className="rounded-lg"
             />
             </label>
             <br />
-            <button type="submit" style={buttonStyle}>Login</button>
+            <button type="submit" className='btn-primary' style={buttonStyle}>Login</button>
         </form>
         <br />
-        <button onClick={handleBackClick} type="submit" style={buttonStyle}>Back</button>
+        <button onClick={handleBackClick} type="submit" className='btn-primary' style={buttonStyle}>Back</button>
+        </div>
         </div>
     );
 }
@@ -134,11 +138,12 @@ function LoginPage() {
 const containerStyle = {
   width: '300px',
   margin: 'auto',
-  marginTop: '100px',
+  marginTop: '0px',
   padding: '20px',
+  
   border: '1px solid #ccc',
   borderRadius: '5px',
-  backgroundColor: '#f2f2f2',
+  backgroundColor: '#f2f2f299',
 };
 
 const inputStyle = {
@@ -149,12 +154,9 @@ const inputStyle = {
 };
 
 const buttonStyle = {
-  display: 'block',
+  
   width: '100%',
   padding: '10px',
-  backgroundColor: '#4caf50',
-  color: 'white',
-  border: 'none',
   borderRadius: '5px',
   cursor: 'pointer',
 };
