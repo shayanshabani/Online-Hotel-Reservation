@@ -102,45 +102,85 @@ export default class ProfilePage extends Component {
 
     return (
        
-      <div  className = "profile content-around">
-        <h1 className='bg-gray-300 bg-opacity-50  rounded-lg pt-5'>
-            welcome {this.state.name} have a nice trip!
-        </h1>
-        <p className='bg-gray-300 bg-opacity-50  rounded-lg pt-5'>
-            your money is  {this.state.money}
-        </p>
+    
+    //     <label> charge your account</label>
+    //     <br></br>
 
-        <label> charge your account</label>
-        <br></br>
-        <label className='bg-gray-300 bg-opacity-50  rounded-lg pt-5'> amount to charge</label>
-
-        <select onChange={this.handleCharge} value={this.state.newcharge} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option value='10000'>1 000 000</option>
-            <option value='50000'>5 000 000</option>
-            <option value='100000'>10 000 000</option>
-            <option value='0'>other amount</option>
-        </select>
-
-        { this.state.useotherval &&
-        <>
-        <label>
-         how much you want to charge:
-        </label>
-
-        <input type="text" value={this.state.userinput} onChange={this.handleinput} className= "bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
-
-        </input>
-        </>
-        }   
 
         
 
-        <button class="btn-primary" onClick={this.charge}>
-        charge
-        </button>
+    //     <button class="btn-primary" onClick={this.charge}>
+    //     charge
+    //     </button>
 
   
-      </div>
+    //   </div>
+
+    <div className="profile font-serif">
+    <div style={containerStyle}>
+    <h2 className='text-center'> welcome {this.state.name} have a nice trip!</h2>
+    <h4 className='text-center'> your money is  {this.state.money} $</h4>
+   
+   
+   
+
+
+    <label className='  rounded-lg pt-5'> amount to charge</label>
+
+    <select onChange={this.handleCharge} value={this.state.newcharge} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        <option value='10000'>1 000 000</option>
+        <option value='50000'>5 000 000</option>
+        <option value='100000'>10 000 000</option>
+        <option value='0'>other amount</option>
+    </select>
+
+    { this.state.useotherval &&
+    <>
+    <label>
+    how much you want to charge:
+    </label>
+
+    <input type="text" value={this.state.userinput} onChange={this.handleinput} style={inputStyle} className="rounded-lg">
+
+    </input>
+    </>
+    }   
+
+    <br />
+    <button onClick={this.charge} className='btn-primary' type="submit" style={buttonStyle}>charge</button>
+    </div>
+    </div>
+
+
     )
   }
 }
+
+
+// CSS styles
+const containerStyle = {
+    width: '300px',
+    margin: 'auto',
+    marginTop: '0px',
+    padding: '20px',
+    
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+    backgroundColor: '#f2f2f299',
+  };
+  
+  const inputStyle = {
+    display: 'block',
+    width: '100%',
+    padding: '8px',
+    marginBottom: '10px',
+  };
+  
+  const buttonStyle = {
+    
+    width: '100%',
+    padding: '10px',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  };
+

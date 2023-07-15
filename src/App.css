@@ -521,8 +521,9 @@ h6 {
   background: url('./images/profile.jpg') center/cover no-repeat;;
 
   min-height: calc(100vh - 66px);
+  padding-top: 50px;
   
-  text-align: center;
+
 }
 
 .login {
