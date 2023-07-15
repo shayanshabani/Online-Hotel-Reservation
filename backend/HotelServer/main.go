@@ -1,15 +1,15 @@
 package main
 
 import (
-	pb "final_project_backend/pbGenerated"
 	"flag"
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"net/http"
 
+	pb "final_project_backend/pbGenerated"
+
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 var (
@@ -17,6 +17,8 @@ var (
 )
 
 func login(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+	c.Header("Access-Control-Allow-Origin", "*")
 	flag.Parse()
 	var req pb.LoginUserRequest
 	if err := c.BindJSON(&req); err != nil {
@@ -58,24 +60,20 @@ func login(c *gin.Context) {
 func signUp(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 	c.Header("Access-Control-Allow-Origin", "*")
-	fmt.Println("before parse")
 	flag.Parse()
 	var req pb.SignUpUserRequest
-	fmt.Println("before bind")
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "invalid body request",
 		})
 		return
 	}
-	fmt.Println("after bind")
 
 	conn, err := grpc.Dial(*addrHotel, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return
 	}
 	defer conn.Close()
-	fmt.Println("dial grpc")
 	client := pb.NewUsersServiceClient(conn)
 
 	resp, err := client.SignUpUser(c, &req)
@@ -100,6 +98,8 @@ func signUp(c *gin.Context) {
 }
 
 func addCredit(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+	c.Header("Access-Control-Allow-Origin", "*")
 	flag.Parse()
 	var req pb.AddCreditRequest
 	if err := c.BindJSON(&req); err != nil {
@@ -133,6 +133,8 @@ func addCredit(c *gin.Context) {
 }
 
 func unavailableDates(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+	c.Header("Access-Control-Allow-Origin", "*")
 	flag.Parse()
 	var req pb.UnavailableDatesRequest
 	if err := c.BindJSON(&req); err != nil {
@@ -165,6 +167,8 @@ func unavailableDates(c *gin.Context) {
 }
 
 func reserve(c *gin.Context) {
+	c.Header("Content-Type", "application/json")
+	c.Header("Access-Control-Allow-Origin", "*")
 	flag.Parse()
 	var req pb.ReserveRequest
 	if err := c.BindJSON(&req); err != nil {
