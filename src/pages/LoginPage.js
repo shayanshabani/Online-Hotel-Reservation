@@ -64,7 +64,7 @@ function LoginPage() {
                 let user = {
                     username: username,
                     password: password,
-                    credit: response.credit,
+                    credit: data.credit,
                 }
                 setUserInCookie(user);
             }
