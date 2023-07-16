@@ -8,38 +8,6 @@ import Image from "../components/ImageComponent/Image";
 import {addDays, format} from 'date-fns';
 import DateCell from "../components/DateCell/DateCell";
 
-
-const URL = "http://localhost:8000/"
-
-async function sendRequestToServer(data, header) {
-    try {
-        const response = await fetch(URL + header, {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-            // Handle server errors
-            throw new Error(`Request failed with status ${response.status}`);
-        }
-
-        const responseData = await response.json();
-        
-        // Handle the response data from the server
-        console.log(responseData);
-        // Perform further operations with the response data
-        return responseData;
-    } 
-    catch (error) {
-    // Handle any errors during the request
-    console.error('Error:', error);
-    }
-    return null;
-}
-
 function setUserInCookie(user) {
   const expirationDate = new Date();
   // expire after 7 days
@@ -106,7 +74,26 @@ function getUnavailable(slug) {
   let data = {
     roomId: getRoomId(slug),
   }
-  return sendRequestToServer(data, 'unavailable-dates/');
+
+  fetch('http://localhost:8000/unavailable-dates/', {
+      method: 'POST',
+      body: JSON.stringify(data),
+  })
+  .then(response => {
+      if (response != null) {
+          console.log(response)
+          return response.json(); // Extract the response body as JSON
+      } else {
+          throw new Error('Failed to receive response from Go server');
+      }
+  })
+  .then(data => {
+      return data.dates;
+  })
+  .catch(error => {
+      console.error('An error occurred while sending form data:', error);
+  });
+  return null;
 }
 
 class SingleRoom extends Component {
@@ -163,21 +150,33 @@ class SingleRoom extends Component {
         dates: Array.from(this.state.selectedPlaces),
       };
 
-      let response = sendRequestToServer(data, 'reserve/');
-
-      if (response.success) {
-        let credits = this.state.selectedPlaces.size * this.context.getRoom(this.state.slug).price;
-        let user = {
-          username: this.state.user.username,
-          password: this.state.user.password,
-          credit: this.state.user.credit - credits,
-        }
-        setUserInCookie(user);
-        alert(response.message);
-      }
-      else {
-        alert(response.message);
-      }
+      fetch('http://localhost:8000/unavailable-dates/', {
+          method: 'POST',
+          body: JSON.stringify(data),
+      })
+      .then(response => {
+          if (response != null) {
+              console.log(response)
+              return response.json(); // Extract the response body as JSON
+          } else {
+              throw new Error('Failed to receive response from Go server');
+          }
+      })
+      .then(data => {
+          alert(data.message);
+          if (data.success) {
+              let credits = this.state.selectedPlaces.size * this.context.getRoom(this.state.slug).price;
+              let user = {
+                username: this.state.user.username,
+                password: this.state.user.password,
+                credit: this.state.user.credit - credits,
+              }
+              setUserInCookie(user);
+          }
+      })
+      .catch(error => {
+          console.error('An error occurred while sending form data:', error);
+      });
 
       console.log('Selected Dates:', selectedDates);
       
