@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 //import {useNavigate} from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-
+// save the object of user in cookie
 function setUserInCookie(user) {
     const expirationDate = new Date();
     // expire after 7 days
@@ -57,7 +57,7 @@ function SignUpPage() {
             username: username,
             password: password,
         };
-
+        // send a request to the back-end to save this user's information in database
         fetch('http://localhost:8000/sign-up', {
             method: 'POST',
             body: JSON.stringify(data),
