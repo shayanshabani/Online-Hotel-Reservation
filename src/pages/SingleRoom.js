@@ -106,7 +106,7 @@ class SingleRoom extends Component {
       showTable: false,
       selectedPlaces: new Set(),
       unavailablePlaces: new Set(getUnavailable(this.slug)),
-      user: JSON.parse(getUserCookie()),
+      user: getUserCookie(),
     };
   }
 

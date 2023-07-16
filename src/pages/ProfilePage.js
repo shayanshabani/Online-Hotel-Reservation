@@ -35,16 +35,15 @@ export default class ProfilePage extends Component {
 
     constructor(props) {
         super(props);
-        
+        let cookie = getUserCookie();
         this.state = {
-            user : JSON.parse(getUserCookie()),
-            name  : this.user.username,
-            money : this.user.credit,
+            user : getUserCookie(),
+            name  : cookie.username,
+            money : cookie.credit,
             newcharge : 10000,
             useotherval : false,
             userinput : ""
         }
-        
     }
 
     
@@ -89,9 +88,9 @@ export default class ProfilePage extends Component {
             alert(data.message);
             if (data.credit > 0) {
                 let user = {
-                    username: user.username,
-                    password: user.password,
-                    credit: user.credit + data.credit,
+                    username: this.name,
+                    password: this.user.password,
+                    credit: this.user.credit + data.credit,
                 };
                 setUserInCookie(user);
                 this.setState({user: user});

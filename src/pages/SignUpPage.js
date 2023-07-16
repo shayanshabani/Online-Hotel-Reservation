@@ -77,7 +77,7 @@ function SignUpPage() {
                     let user = {
                         username: username,
                         password: password,
-                        credit: 0,
+                        credit: 10000,
                     }
                     setUserInCookie(user);
                 }
