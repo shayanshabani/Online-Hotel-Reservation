@@ -67,9 +67,10 @@ export default class ProfilePage extends Component {
     charge = () =>{
         //send to back
         console.log("clicked");
+        let credit = this.state.userotherval ? parseInt(this.state.userinput) : this.state.newcharge;
         let data = {
             username: this.state.name,
-            credit: parseInt(this.state.userinput),
+            credit: credit,
         };
 
         fetch('http://localhost:8000/add-credit/', {
