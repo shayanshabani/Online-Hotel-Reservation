@@ -2,11 +2,6 @@ import React, { useState } from 'react';
 //import {useNavigate} from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-const URL = "http://localhost:8000/"
-
-async function sendRequestToServer(data, header) {
-}
-
 function setUserInCookie(user) {
     const expirationDate = new Date();
     // expire after 7 days
