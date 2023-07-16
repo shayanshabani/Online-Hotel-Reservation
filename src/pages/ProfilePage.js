@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+// save the object of user in cookie
 function setUserInCookie(user) {
     const expirationDate = new Date();
     // expire after 7 days
@@ -14,7 +15,7 @@ function setUserInCookie(user) {
         .map(([key, value]) => `${key}=${value}`)
         .join("; ")}`;
 }
-
+// get the object of user from cookie
 function getUserCookie() {
 
     const cookieName = "user=";
@@ -66,12 +67,12 @@ export default class ProfilePage extends Component {
     charge = () =>{
         //send to back
         console.log("clicked");
-        let credit = this.state.userotherval ? parseInt(this.state.userinput) : this.state.newcharge;
+        let credit = this.state.useotherval ? parseInt(this.state.userinput) : this.state.newcharge;
         let data = {
             username: this.state.name,
             credit: credit,
         };
-
+        // send a request to the back-end to increase user's charge
         fetch('http://localhost:8000/add-credit/', {
           method: 'POST',
           body: JSON.stringify(data),
@@ -88,9 +89,9 @@ export default class ProfilePage extends Component {
             alert(data.message);
             if (data.credit > 0) {
                 let user = {
-                    username: this.name,
-                    password: this.user.password,
-                    credit: this.user.credit + data.credit,
+                    username: this.state.user.username,
+                    password: this.state.user.password,
+                    credit: this.state.user.credit + data.credit,
                 };
                 setUserInCookie(user);
                 this.setState({user: user});
@@ -119,7 +120,7 @@ export default class ProfilePage extends Component {
     <div className="profile font-serif">
     <div style={containerStyle}>
     <h2 className='text-center'> welcome {this.state.name} have a nice trip!</h2>
-    <h4 className='text-center'> your money is  {this.state.money} $</h4>
+    <h4 className='text-center'> your money is  {this.state.user.credit} $</h4>
    
    
    
