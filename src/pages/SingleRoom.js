@@ -38,7 +38,7 @@ function getUserCookie() {
   }
   return null;
 }
-
+// get the id of a room based on its name
 function getRoomId(slug) {
   switch(slug) {
     case "single-economy":
@@ -74,7 +74,7 @@ function getUnavailable(slug) {
   let data = {
     roomId: getRoomId(slug),
   }
-
+  // send a request to back-end to get the already reserved times of this room
   fetch('http://localhost:8000/unavailable-dates/', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -98,6 +98,7 @@ function getUnavailable(slug) {
 
 class SingleRoom extends Component {
   static contextType = RoomContext;
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -105,7 +106,7 @@ class SingleRoom extends Component {
       defaultBcg: "",
       showTable: false,
       selectedPlaces: new Set(),
-      unavailablePlaces: new Set(getUnavailable(this.slug)),
+      unavailablePlaces: new Set(getUnavailable(this.props.match.params.slug)),
       user: getUserCookie(),
     };
   }
@@ -117,7 +118,7 @@ class SingleRoom extends Component {
   handleReserveClick = () => {
     this.setState({ showTable: true });
   };
-
+  // if press on a date, add it, if press one more time, remove it
   handlePlaceClick = (place) => {
     const { selectedPlaces, unavailablePlaces } = this.state;
     const updatedSelectedPlaces = new Set(selectedPlaces);
@@ -145,12 +146,12 @@ class SingleRoom extends Component {
     if (this.state.user != null) {
 
       let data = {
-        roomId: 0,
+        roomId: getRoomId(this.slug),
         username: this.state.user.username,
         dates: Array.from(this.state.selectedPlaces),
       };
-
-      fetch('http://localhost:8000/unavailable-dates/', {
+      // send a request to the back-end to reserve this times for this user
+      fetch('http://localhost:8000/reserve/', {
           method: 'POST',
           body: JSON.stringify(data),
       })
@@ -189,7 +190,7 @@ class SingleRoom extends Component {
       alert('Create an account or login to an existing one first!');
     }
   };
-
+  // just quit the reservation process
   handleCancelClick = () => {
     this.setState({showTable: false});
     this.setState({selectedPlaces: new Set()});
