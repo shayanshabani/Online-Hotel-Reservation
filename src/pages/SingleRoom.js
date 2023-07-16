@@ -33,11 +33,24 @@ function getUserCookie() {
   for (let i = 0; i < cookieArray.length; i++) {
       let cookie = cookieArray[i].trim();
       if (cookie.startsWith(cookieName)) {
-          return cookie.substring(cookieName.length);
+        let userString = cookie.substring(cookieName.length);
+        if (userString == '') {
+            removeUserCookie();
+            break;
+        }
+        else {
+            return userString;
+        }
       }
   }
   return null;
 }
+
+function removeUserCookie() {
+  // set the expiration time to a past date and then it will be deleted automatically
+  document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+
 // get the id of a room based on its name
 function getRoomId(slug) {
   switch(slug) {
