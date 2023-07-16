@@ -1,37 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-const URL = "http://localhost:8000/"
-
-async function sendRequestToServer(data, header) {
-    try {
-        const response = await fetch(URL + header, {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-            // Handle server errors
-            throw new Error(`Request failed with status ${response.status}`);
-        }
-
-        const responseData = await response.json();
-        
-        // Handle the response data from the server
-        console.log(responseData);
-        // Perform further operations with the response data
-        return responseData;
-    } 
-    catch (error) {
-    // Handle any errors during the request
-    console.error('Error:', error);
-    }
-    return null;
-}
-
 function setUserInCookie(user) {
     const expirationDate = new Date();
     // expire after 7 days
@@ -76,24 +45,33 @@ function LoginPage() {
             password: password,
         };
 
-        let response = sendRequestToServer(data, 'login/');
-        if (response.success) {
-            // profile successfully created.
-            // save it in cookie
-            let user = {
-                username: username,
-                password: password,
-                credit: response.credit,
+        fetch('http://localhost:8000/login', {
+            method: 'POST',
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            if (response != null) {
+                console.log(response)
+                return response.json(); // Extract the response body as JSON
+            } else {
+                throw new Error('Failed to receive response from Go server');
             }
-            setUserInCookie(user);
-        }
-        else {
-            alert(response.message);
-        }
-
-        console.log('Username:', username);
-        console.log('Password:', password);
-        // Redirect to authenticated page or perform further actions
+        })
+        .then(data => {
+            const message = data.message; // Extract the message text from the response JSON
+            alert(message); // Display the message text in an alert dialog
+            if (data.success) {
+                let user = {
+                    username: username,
+                    password: password,
+                    credit: response.credit,
+                }
+                setUserInCookie(user);
+            }
+        })
+        .catch(error => {
+            console.error('An error occurred while sending form data:', error);
+        });
         //navigate('/');
         history.push('/');
     };
