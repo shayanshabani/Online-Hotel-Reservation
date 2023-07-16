@@ -1,0 +1,8 @@
+CREATE TABLE room
+(
+    id   BIGSERIAL PRIMARY KEY,
+    size INTEGER DEFAULT 1,
+    beds INTEGER DEFAULT 0,
+    floor INTEGER DEFAULT 1,
+    price INTEGER DEFAULT 100
+);

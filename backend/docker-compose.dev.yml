@@ -1,0 +1,69 @@
+version: '3.8'
+services:
+  ninja:
+    container_name: s3-ninja
+    image: scireum/s3-ninja:8.3.1
+    restart: always
+    ports:
+      - 9444:9000
+  db:
+    image: docker.repos.balad.ir/postgres:14.1-alpine
+    restart: always
+    container_name: image_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - image_db_data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  cleaner:
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/cleaner/Dockerfile
+      secrets:
+        - ci-job-token
+    container_name: image-cleaner
+    env_file:
+      - .env
+    environment:
+      - "PROMETHEUS__LISTENADDRESS=:9001"
+    ports:
+      - 9001:9001
+    restart: on-failure
+    network_mode: host
+
+  upload:
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/upload/Dockerfile
+      secrets:
+        - ci-job-token
+    container_name: image-upload
+    env_file:
+      - .env
+    environment:
+      - "PROMETHEUS__LISTENADDRESS=:9000"
+    ports:
+      - 8000:8000
+      - 9000:9000
+    restart: on-failure
+    depends_on:
+      cleaner:
+        condition: service_started
+    network_mode: host
+
+secrets:
+  ci-job-token:
+    file: ./.secret
+
+volumes:
+  image_db_data:

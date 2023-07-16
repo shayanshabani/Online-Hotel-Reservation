@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package BizServer;
+
+option go_package="final_project_backend/proto";
+
+message SignUpUserRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message SignUpUserResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message LoginUserRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginUserResponse {
+  bool success = 1;
+  string message = 2;
+  int32 credit = 3;
+}
+
+message AddCreditRequest {
+  string username = 1;
+  int32 credit = 2;
+}
+
+message AddCreditResponse {
+  string message = 1;
+  int32 credit = 2;
+}
+
+message UnavailableDatesRequest {
+  int32 roomId = 1;
+}
+
+message UnavailableDatesResponse {
+  repeated int32 dates = 1;
+}
+
+message ReserveRequest {
+  int32 roomId = 1;
+  string username = 2;
+  repeated int32 dates = 3;
+}
+
+message ReserveResponse {
+  string message = 1;
+  bool success = 2;
+}
+
+service UsersService {
+  rpc SignUpUser(SignUpUserRequest) returns (SignUpUserResponse) {}
+  rpc LoginUser(LoginUserRequest) returns (LoginUserResponse) {}
+  rpc AddCredit(AddCreditRequest) returns (AddCreditResponse) {}
+  rpc UnavailableDates(UnavailableDatesRequest) returns (UnavailableDatesResponse) {}
+  rpc Reserve(ReserveRequest) returns (ReserveResponse) {}
+}
