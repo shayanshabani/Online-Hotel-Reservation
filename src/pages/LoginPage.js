@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
+// save the object of user in cookie
 function setUserInCookie(user) {
     const expirationDate = new Date();
     // expire after 7 days
@@ -44,7 +44,7 @@ function LoginPage() {
             username: username,
             password: password,
         };
-
+        // send a request to back-end to authenticate this user
         fetch('http://localhost:8000/login', {
             method: 'POST',
             body: JSON.stringify(data),
