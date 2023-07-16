@@ -1,36 +1,5 @@
 import React, { Component } from 'react'
 
-const URL = "http://localhost:8000/"
-
-async function sendRequestToServer(data, header) {
-    try {
-        const response = await fetch(URL + header, {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-            // Handle server errors
-            throw new Error(`Request failed with status ${response.status}`);
-        }
-
-        const responseData = await response.json();
-        
-        // Handle the response data from the server
-        console.log(responseData);
-        // Perform further operations with the response data
-        return responseData;
-    } 
-    catch (error) {
-    // Handle any errors during the request
-    console.error('Error:', error);
-    }
-    return null;
-}
-
 function setUserInCookie(user) {
     const expirationDate = new Date();
     // expire after 7 days
@@ -102,17 +71,31 @@ export default class ProfilePage extends Component {
             username: this.state.name,
             credit: parseInt(this.state.userinput),
         };
-        let response = sendRequestToServer(data, 'add-credit/');
-        alert(response.message);
-        if (response.credit > 0) {
-            let user = {
-                username: user.username,
-                password: user.password,
-                credit: user.credit + response.credit,
-            };
-            setUserInCookie(user);
-            this.setState({user: user});
-        }
+
+        fetch('http://localhost:8000/add-credit/', {
+          method: 'POST',
+          body: JSON.stringify(data),
+        })
+        .then(response => {
+            if (response != null) {
+                console.log(response)
+                return response.json(); // Extract the response body as JSON
+            } else {
+                throw new Error('Failed to receive response from Go server');
+            }
+        })
+        .then(data => {
+            alert(data.message);
+            if (data.credit > 0) {
+                let user = {
+                    username: user.username,
+                    password: user.password,
+                    credit: user.credit + data.credit,
+                };
+                setUserInCookie(user);
+                this.setState({user: user});
+            }
+        })
     }
 
   render() {
