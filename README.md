@@ -2,7 +2,10 @@
 
 Welcome to the Online Hotel Reservation Website! This web application allows users to sign up or login, manage their profiles, and reserve hotel rooms online.
 
-![web project](./assets/Web_Project.gif)
+
+
+https://github.com/shayanshabani/Online-Hotel-Reservation/assets/94615406/9460fcb3-f592-4366-b45b-5f8cd8136d42
+
 
 
 ## Table of Contents
