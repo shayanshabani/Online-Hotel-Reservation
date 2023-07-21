@@ -4,7 +4,7 @@ Welcome to the Online Hotel Reservation Website! This web application allows use
 
 
 
-https://github.com/shayanshabani/Online-Hotel-Reservation/assets/94615406/9460fcb3-f592-4366-b45b-5f8cd8136d42
+https://user-images.githubusercontent.com/94615406/9460fcb3-f592-4366-b45b-5f8cd8136d42
 
 
 
