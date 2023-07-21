@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // save the object of user in cookie
 function setUserInCookie(user) {
@@ -44,130 +44,109 @@ function removeUserCookie() {
     document.cookie = "user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }
 
-export default class ProfilePage extends Component {
 
-    constructor(props) {
-        super(props);
-        let cookie = getUserCookie();
-        this.state = {
-            user : getUserCookie(),
-            name  : cookie.username,
-            money : cookie.credit,
-            newcharge : 10000,
-            useotherval : false,
-            userinput : ""
+const ProfilePage = () => {
+  const cookie = getUserCookie();
+  const [user, setUser] = useState(cookie);
+  const [name, setName] = useState(cookie.username);
+  const [money, setMoney] = useState(cookie.credit);
+  const [newcharge, setNewCharge] = useState(10000);
+  const [useOtherVal, setUseOtherVal] = useState(false);
+  const [userInput, setUserInput] = useState('');
+
+  // Fetch data when the component mounts
+  useEffect(() => {
+    const cookie = getUserCookie();
+    setUser(cookie);
+    setName(cookie.username);
+    setMoney(cookie.credit);
+  }, []);
+
+  const handleCharge = (event) => {
+    setNewCharge(event.target.value);
+    setUseOtherVal(event.target.value === '0');
+  };
+
+  const handleInput = (event) => {
+    setUserInput(event.target.value);
+  };
+
+  const charge = () => {
+    //send to back
+    console.log('clicked');
+    let credit = useOtherVal ? parseInt(userInput) : newcharge;
+    let data = {
+      username: name,
+      credit: credit,
+    };
+
+    // send a request to the back-end to increase the user's charge
+    fetch('http://localhost:8000/add-credit/', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (response != null) {
+          console.log(response);
+          return response.json(); // Extract the response body as JSON
+        } else {
+          throw new Error('Failed to receive response from the server');
         }
-    }
-
-    
-    handleCharge = (event) => {
-        
-        this.setState({newcharge : event.target.value})
-
-        if (event.target.value == 0) {
-            this.setState({useotherval : true})
-
-        } else{
-            this.setState({useotherval : false})
+      })
+      .then((data) => {
+        alert(data.message);
+        if (data.credit > 0) {
+          let updatedUser = {
+            ...user,
+            credit: user.credit + data.credit,
+          };
+          setUserInCookie(updatedUser);
+          setUser(updatedUser);
         }
-    }
+      });
+  };
 
-    handleinput = event => {
-        this.setState({userinput : event.target.value})
-    }
-
-    charge = () => {
-        //send to back
-        console.log("clicked");
-        let credit = this.state.useotherval ? parseInt(this.state.userinput) : this.state.newcharge;
-        let data = {
-            username: this.state.name,
-            credit: credit,
-        };
-        // send a request to the back-end to increase user's charge
-        fetch('http://localhost:8000/add-credit/', {
-          method: 'POST',
-          body: JSON.stringify(data),
-        })
-        .then(response => {
-            if (response != null) {
-                console.log(response)
-                return response.json(); // Extract the response body as JSON
-            } else {
-                throw new Error('Failed to receive response from Go server');
-            }
-        })
-        .then(data => {
-            alert(data.message);
-            if (data.credit > 0) {
-                let user = {
-                    username: this.state.user.username,
-                    password: this.state.user.password,
-                    credit: this.state.user.credit + data.credit,
-                };
-                setUserInCookie(user);
-                this.setState({user: user});
-            }
-        })
-    }
-
-  render() {
-
-    return (
-       
-    
-    //     <label> charge your account</label>
-    //     <br></br>
-
-
-        
-
-    //     <button class="btn-primary" onClick={this.charge}>
-    //     charge
-    //     </button>
-
-  
-    //   </div>
-
+  return (
     <div className="profile font-serif">
-    <div style={containerStyle}>
-    <h2 className='text-center'> welcome {this.state.name} have a nice trip!</h2>
-    <h4 className='text-center'> your money is  {this.state.user.credit} $</h4>
-   
-   
-   
+      <div style={containerStyle}>
+        <h2 className="text-center">Welcome {name}! Have a nice trip!</h2>
+        <h4 className="text-center">Your money is {money} $</h4>
 
+        <label className="rounded-lg pt-5">Amount to charge</label>
+        <select
+          onChange={handleCharge}
+          value={newcharge}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option value="10000">1,000,000</option>
+          <option value="50000">5,000,000</option>
+          <option value="100000">10,000,000</option>
+          <option value="0">Other amount</option>
+        </select>
 
-    <label className='  rounded-lg pt-5'> amount to charge</label>
+        {useOtherVal && (
+          <>
+            <label>How much do you want to charge?</label>
+            <input
+              type="text"
+              value={userInput}
+              onChange={handleInput}
+              style={inputStyle}
+              className="rounded-lg"
+            />
+          </>
+        )}
 
-    <select onChange={this.handleCharge} value={this.state.newcharge} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option value='10000'>1 000 000</option>
-        <option value='50000'>5 000 000</option>
-        <option value='100000'>10 000 000</option>
-        <option value='0'>other amount</option>
-    </select>
-
-    { this.state.useotherval &&
-    <>
-    <label>
-    how much you want to charge:
-    </label>
-
-    <input type="text" value={this.state.userinput} onChange={this.handleinput} style={inputStyle} className="rounded-lg">
-
-    </input>
-    </>
-    }   
-
-    <br />
-    <button onClick={this.charge} className='btn-primary' type="submit" style={buttonStyle}>charge</button>
+        <br />
+        <button onClick={charge} className="btn-primary" type="submit" style={buttonStyle}>
+          Charge
+        </button>
+      </div>
     </div>
-    </div>
+  );
+};
 
-
-    )
-  }
-}
+export default ProfilePage;
 
 
 // CSS styles
