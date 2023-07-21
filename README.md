@@ -2,10 +2,7 @@
 
 Welcome to the Online Hotel Reservation Website! This web application allows users to sign up or login, manage their profiles, and reserve hotel rooms online.
 
-<video controls width="100%">
-  <source src="https://drive.google.com/file/d/1xRw8XEpRdR-gE-aXU66g4bGcPdKJXYrR/view?usp=sharing" type="video/webm">
-  Your browser does not support the video tag.
-</video>
+![web project](./assets/Web_Project.gif)
 
 
 ## Table of Contents
