@@ -63,19 +63,19 @@ To run this project locally, you need the following installed on your system:
    ```bash
    git clone https://github.com/shayanshabani/Online-Hotel-Reservation.git
    ```
-1. Create a new PostgreSQL database and add this environment variables:
+1. Create a new PostgreSQL database and add these environment variables:
 DB__Server=postgresql,
 DB__Name=postgres,
 DB__Host=localhost,
 DB__Port=5432,
-and then use make migrate_up command to add tables.
+and then use the make migrate_up command to add tables.
 
-1. Run gRPC server and then run gateway in HotelServer/ using go run command.
+1. Run the gRPC server and then run the gateway in HotelServer/ using the go run command.
 
 1. use `npm run start` to launch the website on `http://localhost:3000`
 
 ### Error handling
-If you encoutered any error launching the website use the following commands:
+If you encounter any error launching the website use the following commands:
 - `npm install data-fns`
 - `npm install react-router-dom@5`
 - `npm i --save-dev @types/react-router-dom`
@@ -84,7 +84,7 @@ If you encoutered any error launching the website use the following commands:
 The Online Hotel Reservation Website was built using the following technologies:
 - React, JavaScript, CSS, and Tailwind for front-end development
 - Go, gRPC, and gin for back-end
-- PostgreSQL and sqlc for the database management.
+- PostgreSQL and sqlc for database management.
 
 ## Contact
 If you have any questions or need further assistance, please feel free to contact me: [Shayan Shabani](mailto:shayan.shabani5814@gmail.com)
